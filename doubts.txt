@@ -1,0 +1,6 @@
+ s.get_decoded()
+{'_auth_user_id': '1', '_auth_user_backend': 'django.contrib.auth.backends.ModelBackend', '_auth_user_hash': '37f3a7ba9d7a42009bfae344761450c02ce1be7366e25a7e12c4c0f6ed41c14d', 'skey': {}}
+
+
+s.get_decoded()
+{'_auth_user_id': '1', '_auth_user_backend': 'django.contrib.auth.backends.ModelBackend', '_auth_user_hash': '37f3a7ba9d7a42009bfae344761450c02ce1be7366e25a7e12c4c0f6ed41c14d', 'skey': {'8': {'price': '20.20', 'qty': 2}}}
