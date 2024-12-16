@@ -1,9 +1,11 @@
+from importlib import import_module
 from unittest import skip
 
 from django.contrib.auth.models import User
 from django.http import HttpRequest
 from django.test import Client, RequestFactory, TestCase
 from django.urls import reverse
+from django.conf import settings
 
 from store.models import Category, Product
 from store.views import product_all
@@ -18,7 +20,7 @@ class TestSkip(TestCase):
 class TestViewResponses(TestCase):
     def setUp(self):
         self.c = Client()
-        self.factory = RequestFactory()
+        # self.factory = RequestFactory()
         User.objects.create(username='admin')
         Category.objects.create(name='django', slug='django')
         Product.objects.create(category_id=1, title='django beginners', created_by_id=1,
@@ -60,20 +62,25 @@ class TestViewResponses(TestCase):
         """
         Example: code validation, search HTML for text
         """
+        # Using HttpRequest we can send request to view.
         request = HttpRequest()
+        engine = import_module(settings.SESSION_ENGINE)
+        request.session = engine.SessionStore()
         response = product_all(request)
         html = response.content.decode('utf8')
         self.assertIn('<title>BookStore</title>', html)
         self.assertTrue(html.startswith('\n<!DOCTYPE html>\n'))
         self.assertEqual(response.status_code, 200)
 
-    def test_view_function(self):
-        """
-        Example: Using request factory
-        """
-        request = self.factory.get('/django-beginners')
-        response = product_all(request)
-        html = response.content.decode('utf8')
-        self.assertIn('<title>BookStore</title>', html)
-        self.assertTrue(html.startswith('\n<!DOCTYPE html>\n'))
-        self.assertEqual(response.status_code, 200)
+    # def test_view_function(self):
+    #     """
+    #     Example: Using request factory
+    #     """
+    #     request = self.factory.get('/django-beginners')
+    # Making sure we are accessing the homepage here.
+    # Previous test is doing exactly the same thing.
+    #     response = product_all(request)
+    #     html = response.content.decode('utf8')
+    #     self.assertIn('<title>BookStore</title>', html)
+    #     self.assertTrue(html.startswith('\n<!DOCTYPE html>\n'))
+    #     self.assertEqual(response.status_code, 200)

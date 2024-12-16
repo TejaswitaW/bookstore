@@ -9,6 +9,7 @@ pillow = "*"
 coverage = "*"
 
 [dev-packages]
+flake8 = "*"
 
 [requires]
 python_version = "3.9"

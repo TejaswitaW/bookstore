@@ -1,4 +1,6 @@
- s.get_decoded()
+ Checking data stored session, Session.objects.get(pk="afsklgsksk")
+ 
+ s.get_decoded()#decoding the session data
 {'_auth_user_id': '1', '_auth_user_backend': 'django.contrib.auth.backends.ModelBackend', '_auth_user_hash': '37f3a7ba9d7a42009bfae344761450c02ce1be7366e25a7e12c4c0f6ed41c14d', 'skey': {}}
 
 
