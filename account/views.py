@@ -4,13 +4,19 @@ from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_text
 from django.contrib.auth import login
-
+from django.contrib.auth.decorators import login_required
 
 from .forms import RegistrationForm
 from .token import account_activation_token
 from .models import UserBase
 
-# Create your views here.
+@login_required
+def dashboard(request):
+    # If user is logged in then allow to access orders page
+    # orders = user_orders(request)
+    return render(request, 'account/user/dashboard.html')
+    # return render(request, 'account/user/dashboard.html',{'section':'profile', 'orders':orders})
+
 def account_register(request):
     # This is the registration page
     if request.user.is_authenticated:
