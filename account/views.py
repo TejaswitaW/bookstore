@@ -1,11 +1,14 @@
 from django.shortcuts import render, redirect
 from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
-from django.utils.http import urlsafe_base64_encode
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_text
+from django.contrib.auth import login
+
 
 from .forms import RegistrationForm
 from .token import account_activation_token
+from .models import UserBase
 
 # Create your views here.
 def account_register(request):
@@ -33,5 +36,23 @@ def account_register(request):
     else:
         registerForm = RegistrationForm()
     return render(request, 'account/registration/registration.html', {'form': registerForm})
+
+def account_activate(request, uidb64, token):
+    # Decode uidb64, token this activate the user account.
+    try:
+        # Trying to get the data.
+        uid = force_text(urlsafe_base64_decode(uidb64))
+        user = UserBase.objects.get(pk=uid)
+        if user is not None and account_activation_token.check_token(user,token):
+            user.is_active = True
+            user.save()
+            login(request, user)
+            return redirect('account:dashboard')
+        else:
+            return render(request, 'account/registration/activation_invalid.html')
+    except:
+        pass
+
+
 
 
