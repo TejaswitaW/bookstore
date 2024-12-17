@@ -11,3 +11,11 @@ class RegistrationForm(forms.ModelForm):
     class Meta:
         model = UserBase
         fields = ('user_name','email')
+
+    def clean_username(self):
+        # Checking is username already exist
+        user_name = self.cleaned_data['user_name'].lower()
+        r = UserBase.objects.filter(user_name=user_name)
+        if r.count():
+            raise forms.ValidationError('Username already exist')
+        return user_name
