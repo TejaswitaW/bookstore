@@ -1,11 +1,8 @@
-from django.shortcuts import render
-from django.shortcuts import redirect
+from django.shortcuts import render, redirect
 from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_encode
-from django.utils.encoding import force_bytes
-
-
+from django.utils.encoding import force_bytes, force_text
 
 from .forms import RegistrationForm
 from .token import account_activation_token
