@@ -7,7 +7,7 @@ from django.utils.encoding import force_bytes
 
 
 
-from forms import RegistrationForm
+from .forms import RegistrationForm
 from .token import account_activation_token
 
 # Create your views here.
