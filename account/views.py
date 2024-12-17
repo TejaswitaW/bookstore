@@ -12,6 +12,7 @@ from .token import account_activation_token
 
 # Create your views here.
 def account_register(request):
+    # This is the registration page
     if request.user.is_authenticated:
         return redirect('/')
     if request.method == 'POST':
@@ -32,3 +33,8 @@ def account_register(request):
             'token': account_activation_token.make_token(user),
         })
         user.email_user(subject=subject, message=message)
+    else:
+        registerForm = RegistrationForm()
+    return render(request, 'account/registration/registration.html', {'form': registerForm})
+
+
