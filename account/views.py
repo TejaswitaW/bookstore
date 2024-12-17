@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.http import HttpResponse
 from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
@@ -39,6 +40,9 @@ def account_register(request):
             'token': account_activation_token.make_token(user),
         })
         user.email_user(subject=subject, message=message)
+        # After we send an email , we want to redirect them to somewhere
+        return HttpResponse("Registered successfully and activation sent")
+
     else:
         registerForm = RegistrationForm()
     return render(request, 'account/registration/registration.html', {'form': registerForm})
