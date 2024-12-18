@@ -7,7 +7,7 @@ from django.utils.encoding import force_bytes, force_text
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 
-from .forms import RegistrationForm
+from .forms import RegistrationForm, UserEditForm
 from .token import account_activation_token
 from .models import UserBase
 
@@ -63,6 +63,18 @@ def account_activate(request, uidb64, token):
     else:
         return render(request, 'account/registration/activation_invalid.html')
 
+@login_required    
+def edit_details(request):
+    if request.method == 'POST':
+        user_form = UserEditForm(instance=request.user, data=request.POST)
+        
+        if user_form.is_valid():
+            user_form.save()
+        else:
+            user_form = UserEditForm(instance=request.user)
+    # This view initially just show the form.
+    return render(request, 
+                  'account/user/edit_details.html', {'user_form': user_form})
 
 
 
