@@ -4,7 +4,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_text
-from django.contrib.auth import login
+from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 
 from .forms import RegistrationForm, UserEditForm
@@ -75,6 +75,16 @@ def edit_details(request):
     # This view initially just show the form.
     return render(request, 
                   'account/user/edit_details.html', {'user_form': user_form})
+@login_required
+def delete_user(request):
+    # Following line allow us to get user id.
+    user = UserBase.objects.get(user_name=request.user)
+    # Now they are unable to login.
+    user.is_active = False
+    user.save()
+    logout(request)
+    return redirect('account:delete_confirmation')
+
 
 
 
